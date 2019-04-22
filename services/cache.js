@@ -38,9 +38,13 @@ mongoose.Query.prototype.exec = async function(){
     const cacheValue = await client.get(key);
 
     if(cacheValue){
-        console.log(cacheValue);
-        return JSON.parse(cacheValue);
+        const doc = JSON.parse(cacheValue);
+        console.log("cached copy");
+        return Array.isArray(doc)
+            ? doc.map(d=> new this.model(d))
+            : new this.model(doc);
     }
+    console.log("from db")
 
     const result = await exec.apply(this,arguments);
     client.set(key,JSON.stringify(result));
