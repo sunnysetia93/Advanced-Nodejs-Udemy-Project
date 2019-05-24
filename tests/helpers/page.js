@@ -5,8 +5,8 @@ const userFactory = require('../factories/userFactory');
 class CustomPage {
     static async build(){
         const browser = await puppeteer.launch({
-            headless:false        // false if you want chromium browser to pop up, else true specially when using CI or production
-            // args:['--no-sandbox']
+            headless:true,          // false if you want chromium browser to pop up, else true specially when using CI or production
+            args:['--no-sandbox']
         })
         const page = await browser.newPage();
         const customPage = new CustomPage(page);
